@@ -2,7 +2,7 @@ import React from "react";
 import MainComment from "./MainComment";
 import Avatar from "../images/avatars/image-juliusomo.png";
 import { useState, useEffect } from "react";
-import Editor from "./editor";
+import Editor from "./Editor";
 
 const App = () => {
   const [commentsArray, setCommentsArray] = useState([]);

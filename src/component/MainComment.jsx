@@ -1,4 +1,4 @@
-import Vote from "./vote";
+import Vote from "./Vote.jsx";
 
 const MainComment = ({ handleReply, id, index, comment }) => {
   const { score, user, content, createdAt } = comment;
