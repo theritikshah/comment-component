@@ -4,16 +4,35 @@
     gap: 25px;
 
     .replies {
+        --box-height: 0px;
         display: flex;
         flex-direction: column;
         gap: 25px;
-        // margin-left: 30px;
-        padding-left: 30px;
-        border-left: 1px solid var(--Light-grayish-blue);
+        padding-left: calc(7% + 50px);
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: calc(7% - 25px/2);
+            // left: calc(25px /2);
+            top: -25px;
+            width: 2px;
+            background-color: var(--Light-gray);
+            height: calc(var(--box-height) - 45px);
+
+
+
+        }
 
         @media screen and (max-width:768px) {
-            // margin-left: 15px;
             padding-left: 15px;
+
+            &::after {
+                left: calc(0px);
+                height: calc(var(--box-height) - 0px);
+
+            }
         }
 
     }

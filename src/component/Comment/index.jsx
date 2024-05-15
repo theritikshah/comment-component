@@ -6,7 +6,16 @@ import styles from "./comment.module.scss";
 
 const Comment = forwardRef(
   (
-    { comment, currentUser, handleReply, handleDelete, id, handleUpdate },
+    {
+      className,
+      comment,
+      currentUser,
+      handleReply,
+      handleDelete,
+      id,
+      handleUpdate,
+      onEdit,
+    },
     ref
   ) => {
     const { score, user, content, createdAt, replyingTo } = comment;
@@ -24,7 +33,13 @@ const Comment = forwardRef(
     }, [editorRef, isReplying]);
 
     const handleReplyClick = () => {
-      setIsReplying((isEditing) => !isEditing);
+      setIsReplying((isEditing) => {
+        if (onEdit) {
+          onEdit(!isEditing);
+        }
+        return !isEditing;
+      });
+
       // handleReply(id);
     };
 
@@ -74,7 +89,10 @@ const Comment = forwardRef(
     }, [content]);
 
     return (
-      <div className={styles.container} ref={ref}>
+      <div
+        className={`${styles.container} ${className ? styles[className] : ""}`}
+        ref={ref}
+      >
         <div className={styles.comment_container}>
           <div className={styles.vote_container}>
             <Vote score={score} />

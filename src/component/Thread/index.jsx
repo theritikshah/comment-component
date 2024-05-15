@@ -5,6 +5,9 @@ import styles from "./thread.module.scss";
 const Thread = ({ id, comment, currentUser, setCommentsArray }) => {
   const { replies = [] } = comment;
   const [updatedReplies, setUpdatedReplies] = useState(replies);
+  const [replyBoxHeigth, setReplyBoxHeigth] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+
   const commentRef = useRef(null);
   const replyContainerRef = useRef(null);
 
@@ -56,6 +59,18 @@ const Thread = ({ id, comment, currentUser, setCommentsArray }) => {
     [updatedReplies]
   );
 
+  useEffect(() => {
+    if (!replyContainerRef.current) return;
+    const heigth = replyContainerRef.current.clientHeight;
+    const commentHeigth = commentRef.current.clientHeight;
+    setReplyBoxHeigth(heigth - commentHeigth / 2 + 25 - 15);
+  }, [
+    isEditing,
+    replyContainerRef.current,
+    commentRef.current,
+    updatedReplies,
+  ]);
+
   return (
     <div className={styles.thread_container}>
       <Comment
@@ -68,7 +83,11 @@ const Thread = ({ id, comment, currentUser, setCommentsArray }) => {
       />
 
       {Boolean(updatedReplies?.length) && (
-        <div className={styles.replies} ref={replyContainerRef}>
+        <div
+          className={styles.replies}
+          style={{ ["--box-height"]: `${replyBoxHeigth}px` }}
+          ref={replyContainerRef}
+        >
           {updatedReplies.map((reply, index) => (
             <>
               <Comment
@@ -80,6 +99,8 @@ const Thread = ({ id, comment, currentUser, setCommentsArray }) => {
                 handleDelete={handleDeleteReply}
                 handleUpdate={handleReplyUpdate}
                 key={index}
+                className={"reply-box"}
+                onEdit={(isEditing) => setIsEditing(isEditing)}
               />
             </>
           ))}
