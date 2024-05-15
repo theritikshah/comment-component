@@ -72,11 +72,7 @@ const Comment = forwardRef(
           const username = part?.trim();
 
           return (
-            <span
-              onMouseOver={onHover}
-              className={styles.userMention}
-              key={index}
-            >
+            <span className={styles.userMention} key={index}>
               {" "}
               @{username}
             </span>
