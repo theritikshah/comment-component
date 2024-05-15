@@ -1,6 +1,7 @@
 import React from "react";
 import Avatar from "../images/avatars/image-juliusomo.png";
 import { useState, useEffect } from "react";
+import moment from "moment";
 import Editor from "./Editor";
 import styles from "./app.module.scss";
 import Thread from "./Thread";
@@ -18,15 +19,6 @@ const App = () => {
       });
   }, []);
 
-  function handleReply(id) {
-    // console.log(commentsArray.filter(()=>(comment[] )))
-    setCommentsArray((pre) =>
-      pre.filter((c, i) => {
-        return i !== id;
-      })
-    );
-  }
-
   function handleSubmit(value) {
     const comment = {
       user: { ...currentUser },
@@ -43,7 +35,6 @@ const App = () => {
       {commentsArray.map((comment, i) => (
         <Thread
           id={comment.id}
-          handleReply={handleReply}
           comment={comment}
           key={i}
           index={i}
