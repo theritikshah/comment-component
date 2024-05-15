@@ -1,0 +1,23 @@
+.thread_container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    .replies {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        // margin-left: 30px;
+        padding-left: 30px;
+        border-left: 1px solid var(--Light-grayish-blue);
+
+        @media screen and (max-width:768px) {
+            // margin-left: 15px;
+            padding-left: 15px;
+        }
+
+    }
+
+
+
+}
