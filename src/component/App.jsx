@@ -33,6 +33,7 @@ const App = () => {
       content: value,
       score: 0,
       replies: [],
+      timeStamp: moment(),
     };
     setCommentsArray((pre) => [...pre, comment]);
   }
