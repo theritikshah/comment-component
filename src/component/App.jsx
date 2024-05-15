@@ -1,8 +1,9 @@
 import React from "react";
-import MainComment from "./MainComment";
 import Avatar from "../images/avatars/image-juliusomo.png";
 import { useState, useEffect } from "react";
 import Editor from "./Editor";
+import styles from "./app.module.scss";
+import Thread from "./Thread";
 
 const App = () => {
   const [commentsArray, setCommentsArray] = useState([]);
@@ -34,19 +35,19 @@ const App = () => {
       replies: [],
     };
     setCommentsArray((pre) => [...pre, comment]);
-    console.log(commentsArray);
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       {commentsArray.map((comment, i) => (
-        <MainComment
-          id={i}
+        <Thread
+          id={comment.id}
           handleReply={handleReply}
           comment={comment}
           key={i}
           index={i}
           currentUser={currentUser}
+          setCommentsArray={setCommentsArray}
         />
       ))}
 
