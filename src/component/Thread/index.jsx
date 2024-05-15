@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import moment from "moment";
 import Comment from "../Comment/index.jsx";
 import styles from "./thread.module.scss";
 
@@ -11,31 +12,38 @@ const Thread = ({ id, comment, currentUser, setCommentsArray }) => {
   const commentRef = useRef(null);
   const replyContainerRef = useRef(null);
 
-  const handleReply = (content, user) => {
-    setUpdatedReplies((preReplies) => {
-      const reply = {
-        id: preReplies.length + 1,
-        content,
-        score: 0,
-        replyingTo: user.username,
-        user: currentUser,
-      };
-      return [...preReplies, reply];
-    });
-    commentRef.current.scrollIntoView(true);
-  };
+  const handleReply = useCallback(
+    (content, user) => {
+      setUpdatedReplies((preReplies) => {
+        const reply = {
+          id: preReplies.length + 1,
+          content,
+          score: 0,
+          replyingTo: user.username,
+          user: currentUser,
+          timeStamp: moment(),
+        };
+        return [...preReplies, reply];
+      });
+      commentRef.current.scrollIntoView(true);
+    },
+    [updatedReplies]
+  );
 
   const handleDeleteComment = useCallback((id) => {
     setCommentsArray((preComments) =>
       preComments.filter(({ id: preId }) => preId !== id)
     );
-  });
+  }, []);
 
-  const handleDeleteReply = useCallback((replyId) => {
-    setUpdatedReplies((preComments) =>
-      preComments.filter(({ id: preId }) => preId !== replyId)
-    );
-  });
+  const handleDeleteReply = useCallback(
+    (replyId) => {
+      setUpdatedReplies((preComments) =>
+        preComments.filter(({ id: preId }) => preId !== replyId)
+      );
+    },
+    [updatedReplies]
+  );
 
   const handleCommentUpdate = useCallback((id, content) => {
     setCommentsArray((preComments) =>

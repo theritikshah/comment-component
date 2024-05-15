@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, forwardRef } from "react";
+import moment from "moment";
 import Vote from "../Vote";
 import Editor from "../Editor";
 
@@ -18,8 +19,9 @@ const Comment = forwardRef(
     },
     ref
   ) => {
-    const { score, user, content, createdAt, replyingTo } = comment;
+    const { score, user, content, createdAt, replyingTo, timeStamp } = comment;
     const [text, setText] = useState();
+    const [time, setTime] = useState("");
     const [isReplying, setIsReplying] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [updateContent, setUpdateContent] = useState(content);
@@ -62,15 +64,12 @@ const Comment = forwardRef(
 
     useEffect(() => {
       const regex = /(?:^|\s)@(\w+)(?=\W|$)/;
-      // const regex = /(\B@(\w+))|([^\s]+)|(\s+)/g;
-      const parts = content.split(regex); // Split into parts
+      const parts = content.split(regex);
       const replacedText = parts.map((part, index) => {
         if (index % 2 === 0) {
-          return part; // Non-mention part
+          return part;
         } else {
-          const username = part?.trim(); // Extract the username
-
-          const onHover = (event) => {};
+          const username = part?.trim();
 
           return (
             <span
@@ -88,6 +87,28 @@ const Comment = forwardRef(
       setText(replacedText);
     }, [content]);
 
+    useEffect(() => {
+      if (!timeStamp) return;
+
+      const now = moment();
+      const diffInSeconds = now.diff(timeStamp, "seconds");
+
+      setTime(diffInSeconds < 10 ? "Just Now" : moment(timeStamp).fromNow());
+
+      const calculateInterval = () => {
+        if (diffInSeconds < 60) return 1000 * 10;
+        else if (diffInSeconds < 3600) return 1000 * 60;
+        else if (diffInSeconds < 86400) return 1000 * 60 * 60;
+        else return 1000 * 60 * 60 * 24;
+      };
+
+      const timer = setInterval(() => {
+        setTime(moment(timeStamp).fromNow());
+      }, calculateInterval());
+
+      return () => clearInterval(timer);
+    }, []);
+
     return (
       <div
         className={`${styles.container} ${className ? styles[className] : ""}`}
@@ -101,7 +122,9 @@ const Comment = forwardRef(
             <img src={avatarSrc} alt="avatar" className="" />
             <h3 className="">{user.username}</h3>
             {isCurrentUser && <span className={styles.tag}>you</span>}
-            <span className={styles.createdAt}>{createdAt && createdAt}</span>
+            <span className={styles.createdAt}>
+              {(createdAt && createdAt) || (timeStamp && time)}
+            </span>
           </div>
           <div className={styles.cta}>
             {!isCurrentUser && (
