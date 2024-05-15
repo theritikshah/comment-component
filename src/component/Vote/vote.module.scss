@@ -2,26 +2,13 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-}
 
-.vote button {
-
-    color: var(--Light-grayish-blue);
-    border: none;
-    background-color: transparent;
-    font-size: 30px;
-    padding: 5px 5px;
 }
 
 
-.votebutton button:hover {
-    cursor: pointer;
-    color: var(--Moderate-blue);
-}
 
-.votebutton button.active {
-    color: var(--Moderate-blue);
-}
+
+
 
 .votebutton {
     font-size: 20px;
@@ -32,6 +19,24 @@
     flex-direction: column;
     align-items: center;
     border-radius: var(--border-radius);
+    width: fit-content;
+
+    .upvote {
+
+        color: var(--Light-grayish-blue);
+        border: none;
+        background-color: transparent;
+        font-size: 30px;
+        padding: 5px 5px;
+        cursor: pointer;
+
+
+
+        &.active {
+            color: var(--Moderate-blue);
+        }
+    }
+
 }
 
 .votecount {
