@@ -44,7 +44,11 @@ const App = () => {
       ))}
 
       {currentUser && (
-        <Editor onSubmit={handleSubmit} currentUser={currentUser} />
+        <Editor
+          onSubmit={handleSubmit}
+          placeholder="Add a comment..."
+          currentUser={currentUser}
+        />
       )}
     </div>
   );
